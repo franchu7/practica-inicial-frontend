@@ -1,0 +1,306 @@
+<!--Index page with Bootstrap and JQuery-->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sitio de Compra Online</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .cursor-pointer {
+        cursor: pointer;
+      }
+      .add-to-cart {
+        margin-left: 5px;
+      }
+      .product-img {
+        width: '100%';
+        height: '100%';
+        transition: all 0.5s ease-in-out;
+      }
+
+      .product-img:hover {
+        transform: scale(1.5);
+      }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('.titleCategory').click(function () {
+          $(this).parent('div').next('.products').slideToggle()
+          $(this).parent('div').find('button').toggleClass('disabled')
+          if ($(this).parent('div').find('button').hasClass('disabled')) {
+            $(this).parent('div').find('button').attr('disabled', true)
+          } else {
+            $(this).parent('div').find('button').attr('disabled', false)
+          }
+        })
+      })
+
+      $(document).ready(function () {
+        $('.products li').each(function () {
+          var product = $(this).text()
+          $(this).append('<button class="add-to-cart">Agregar al carrito</button>')
+          $(this)
+            .find('.add-to-cart')
+            .click(function () {
+              $('.cart-items').append('<li>' + product + '</li>')
+            })
+        })
+      })
+
+      function addCategory(nombreCategoria) {
+        event.preventDefault()
+        // Crear el HTML para la nueva categoría
+        var categoryHtml =
+          '<div class="category">' + '<h2 class="cursor-pointer">' + nombreCategoria + '</h2>' + '<dl class="products"></dl>' + '</div>'
+
+        // Añadir la nueva categoría al final de las categorías existentes
+        $('#categorias').append(categoryHtml)
+
+        // Cerrar el modal
+        $('#modalCategoria').modal('hide')
+
+        // Limpiar el valor del input
+        $('#nombreCategoria').val('')
+      }
+
+      $('#category_form').submit(function (e) {
+        var nombreCategoria = $('#nombreCategoria').val()
+        addCategory(nombreCategoria)
+      })
+
+      $(document).ready(function () {
+        $('.custom-file-input').on('change', function () {
+          var fileName = $(this).val().split('\\').pop()
+          $(this).next('.custom-file-label').html(fileName)
+        })
+      })
+      $(document).ready(function () {
+        $('#imagenProducto').change(function (event) {
+          var file = event.target.files[0]
+          var reader = new FileReader()
+
+          reader.onload = function (event) {
+            $('#imagen-preview').attr('src', event.target.result)
+          }
+
+          reader.readAsDataURL(file)
+        })
+      })
+
+      $(document).ready(function () {
+        $('#guardarProducto').click(function () {
+          var codigoProducto = $('#codigoProducto').val()
+          var descripcionProducto = $('#descripcionProducto').val()
+          var precioProducto = $('#precioProducto').val()
+          var stockProducto = $('#stockProducto').val()
+          var imagenProducto = $('#imagen-preview').attr('src')
+          var categoria = $('#categoriaSeleccionada').text()
+
+          var productoHtml =
+            '<div class="row align-items-center w-100">' +
+            '<div class="col-md-3">' +
+            '<img src="' +
+            imagenProducto +
+            '" alt="Producto ' +
+            codigoProducto +
+            '" width="100%" height="100%" />' +
+            '</div>' +
+            '<div class="col-md-9">' +
+            '<dt>Código de producto:</dt>' +
+            '<dd>' +
+            codigoProducto +
+            '</dd>' +
+            '<dt>Descripción:</dt>' +
+            '<dd>' +
+            descripcionProducto +
+            '</dd>' +
+            '<dt>Precio:</dt>' +
+            '<dd>' +
+            precioProducto +
+            ' €</dd>' +
+            '<dt>Stock:</dt>' +
+            '<dd>' +
+            stockProducto +
+            ' unidades</dd>' +
+            '</div>' +
+            '</div>'
+
+          $('.category:contains("' + categoria + '")')
+            .find('.products')
+            .append('<li>' + productoHtml + '</li>')
+
+          $('#modalProducto').modal('hide')
+          $('#codigoProducto').val('')
+          $('#descripcionProducto').val('')
+          $('#precioProducto').val('')
+          $('#stockProducto').val('')
+          $('#imagen-preview').attr('src', '#')
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <div class="row vh-100 mx-auto">
+      <div class="col-md-6 bg-primary h-100 d-flex flex-column align-items-center" id="categorias">
+        <h1>Categorías</h1>
+        <!-- Boton para añadir nuevas categorias -->
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalCategoria">Añadir categoría</button>
+        <!-- Modal para añadir nueva categoria -->
+        <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalCategoriaLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalCategoriaLabel">Añadir nueva categoría</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form id="category_form">
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="nombreCategoria" class="col-form-label">Nombre de la categoría:</label>
+                    <input type="text" required class="form-control" id="nombreCategoria" />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="category bg-secondary">
+          <div class="d-flex align-items-center justify-content-center px-4">
+            <h2 class="titleCategory cursor-pointer">Juegos de terror</h2>
+            <button type="button" class="addCategory btn btn-success" data-toggle="modal" data-target="#modalProducto">Añadir juego</button>
+          </div>
+          <dl class="products">
+            <!-- Modal para añadir nuevo producto -->
+            <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalProductoLabel">Añadir nuevo juego</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div>
+                        <label for="codigoProducto" class="col-form-label">Código del producto:</label>
+                        <input type="text" class="form-control" id="codigoProducto" />
+
+                        <label for="descripcionProducto" class="col-form-label">Descripción del producto:</label>
+                        <input type="text" class="form-control" id="descripcionProducto" />
+
+                        <label for="precioProducto" class="col-form-label">Precio del producto:</label>
+                        <input type="text" class="form-control" id="precioProducto" />
+
+                        <label for="stockProducto" class="col-form-label">Stock del producto:</label>
+                        <input type="text" class="form-control" id="stockProducto" />
+
+                        <label for="imagenProducto" class="col-form-label">Imagen del producto:</label>
+                        <div class="input-group">
+                          <div class="custom-file">
+                            <label class="custom-file-label" for="imagenProducto">Seleccionar archivo</label>
+                            <input
+                              type="file"
+                              class="custom-file-input"
+                              id="imagenProducto"
+                              accept="image/*"
+                              aria-describedby="inputGroupFileAddon"
+                            />
+                          </div>
+                        </div>
+                        <img class="mt-2" id="imagen-preview" src="#" alt="Imagen del producto" width="180px" height="270px" />
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="guardarProducto">Guardar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row d-flex align-items-center w-100 bg-white">
+              <div class="col-md-3">
+                <img class="product-img" src="images/resident_evil_4.jpg" alt="Producto 1" width="100%" height="100%" />
+              </div>
+              <div class="col-md-9">
+                <dt>Código de producto:</dt>
+                <dd>1</dd>
+                <dt>Descripción:</dt>
+                <dd>
+                  Sobrevivir es solo el principio. Seis años después de la catástrofe biológica en Raccoon City, el agente Leon S. Kennedy, uno de los
+                  supervivientes del desastre, ha sido enviado a rescatar a la hija del presidente, a quien han secuestrado. Siguiendo su rastro,
+                  llega a una apartada población europea, donde sus habitantes sufren un mal terrible. Así comienza esta historia de un arriesgado
+                  rescate y terror escalofriante donde se cruzan la vida y la muerte, y el miedo y la catarsis. Con una mecánica de juego modernizada,
+                  una historia reimaginada y unos gráficos espectacularmente detallados, Resident Evil 4 Remake supone el renacimiento de un gigante
+                  del mundo de los videojuegos.
+                </dd>
+                <dt>Precio:</dt>
+                <dd>10.99 €</dd>
+                <dt>Stock:</dt>
+                <dd>3 unidades</dd>
+              </div>
+            </div>
+          </dl>
+        </div>
+
+        <div class="category bg-secondary">
+          <div class="d-flex align-items-center justify-content-center px-4">
+            <h2 class="titleCategory cursor-pointer">Juegos de plataformas</h2>
+            <button type="button" class="addCategory btn btn-success" data-toggle="modal" data-target="#modalProducto">Añadir juego</button>
+          </div>
+          <dl class="products">
+            <div class="row align-items-center w-100 bg-white">
+              <div class="col-md-3">
+                <img class="product-img" src="images/mario_odyssey.jpg" alt="Producto 2" width="100%" height="100%" />
+              </div>
+              <div class="col-md-9">
+                <dt>Código de producto:</dt>
+                <dd>1234</dd>
+                <dt>Descripción:</dt>
+                <dd>Descripción del producto 1</dd>
+                <dt>Precio:</dt>
+                <dd>10.99 €</dd>
+                <dt>Stock:</dt>
+                <dd>3 unidades</dd>
+              </div>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <div class="col-md-6 bg-secondary h- d-flex flex-column align-items-center" id="cesta">
+        <h1>Cesta de la compra</h1>
+      </div>
+    </div>
+  </body>
+</html>
