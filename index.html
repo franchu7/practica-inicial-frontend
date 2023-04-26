@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -27,143 +27,27 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    <!--<script>
-      $(document).ready(function () {
-        $('.titleCategory').click(function () {
-          $(this).parent('div').next('.products').slideToggle()
-          $(this).parent('div').find('button').toggleClass('disabled')
-          if ($(this).parent('div').find('button').hasClass('disabled')) {
-            $(this).parent('div').find('button').attr('disabled', true)
-          } else {
-            $(this).parent('div').find('button').attr('disabled', false)
-          }
-        })
-      })
-
-      $(document).ready(function () {
-        $('.products li').each(function () {
-          var product = $(this).text()
-          $(this).append('<button class="add-to-cart">Agregar al carrito</button>')
-          $(this)
-            .find('.add-to-cart')
-            .click(function () {
-              $('.cart-items').append('<li>' + product + '</li>')
-            })
-        })
-      })
-
-      function addCategory(nombreCategoria) {
-        event.preventDefault()
-        // Crear el HTML para la nueva categoría
-        var categoryHtml =
-          '<div class="category">' + '<h2 class="cursor-pointer">' + nombreCategoria + '</h2>' + '<dl class="products"></dl>' + '</div>'
-
-        // Añadir la nueva categoría al final de las categorías existentes
-        $('#categorias').append(categoryHtml)
-
-        // Cerrar el modal
-        $('#modalCategoria').modal('hide')
-
-        // Limpiar el valor del input
-        $('#nombreCategoria').val('')
-      }
-
-      $('#category_form').submit(function (e) {
-        var nombreCategoria = $('#nombreCategoria').val()
-        addCategory(nombreCategoria)
-      })
-
-      $(document).ready(function () {
-        $('.custom-file-input').on('change', function () {
-          var fileName = $(this).val().split('\\').pop()
-          $(this).next('.custom-file-label').html(fileName)
-        })
-      })
-      $(document).ready(function () {
-        $('#imagenProducto').change(function (event) {
-          var file = event.target.files[0]
-          var reader = new FileReader()
-
-          reader.onload = function (event) {
-            $('#imagen-preview').attr('src', event.target.result)
-          }
-
-          reader.readAsDataURL(file)
-        })
-      })
-
-      $(document).ready(function () {
-        $('#guardarProducto').click(function () {
-          var codigoProducto = $('#codigoProducto').val()
-          var descripcionProducto = $('#descripcionProducto').val()
-          var precioProducto = $('#precioProducto').val()
-          var stockProducto = $('#stockProducto').val()
-          var imagenProducto = $('#imagen-preview').attr('src')
-          var categoria = $('#categoriaSeleccionada').text()
-
-          var productoHtml =
-            '<div class="row align-items-center w-100">' +
-            '<div class="col-md-3">' +
-            '<img src="' +
-            imagenProducto +
-            '" alt="Producto ' +
-            codigoProducto +
-            '" width="100%" height="100%" />' +
-            '</div>' +
-            '<div class="col-md-9">' +
-            '<dt>Código de producto:</dt>' +
-            '<dd>' +
-            codigoProducto +
-            '</dd>' +
-            '<dt>Descripción:</dt>' +
-            '<dd>' +
-            descripcionProducto +
-            '</dd>' +
-            '<dt>Precio:</dt>' +
-            '<dd>' +
-            precioProducto +
-            ' €</dd>' +
-            '<dt>Stock:</dt>' +
-            '<dd>' +
-            stockProducto +
-            ' unidades</dd>' +
-            '</div>' +
-            '</div>'
-
-          $('.category:contains("' + categoria + '")')
-            .find('.products')
-            .append('<li>' + productoHtml + '</li>')
-
-          $('#modalProducto').modal('hide')
-          $('#codigoProducto').val('')
-          $('#descripcionProducto').val('')
-          $('#precioProducto').val('')
-          $('#stockProducto').val('')
-          $('#imagen-preview').attr('src', '#')
-        })
-      })
-    </script>-->
   </head>
   <body>
     <div class="container-fluid">
       <div class="row h-100 mx-auto mt-3">
-        <div class="col-md-6 d-flex flex-column align-items-center" id="categorias">
+        <div class="col-md-6 d-flex flex-column align-items-center" id="categories">
           <h1 class="w-100 rounded p-3 text-center text-dark bg-white">Categorías</h1>
-          <button type="button" class="w-100 mb-2 btn btn-success" data-toggle="modal" data-target="#modalCategoria">Añadir categoría</button>
-          <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalCategoriaLabel" aria-hidden="true">
+          <button type="button" class="w-100 mb-2 btn btn-success" data-toggle="modal" data-target="#category-modal">Añadir categoría</button>
+          <div class="modal fade" id="category-modal" tabindex="-1" aria-labelledby="category-modal-label" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="modalCategoriaLabel">Añadir nueva categoría</h5>
+                  <h5 class="modal-title" id="category-modal-label">Añadir nueva categoría</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form id="category_form">
+                <form id="category-form">
                   <div class="modal-body">
                     <div class="form-group">
-                      <label for="nombreCategoria" class="col-form-label">Nombre de la categoría:</label>
-                      <input type="text" required class="form-control" id="nombreCategoria" />
+                      <label for="category-name" class="col-form-label">Nombre de la categoría:</label>
+                      <input type="text" required class="form-control" id="category-name" />
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -174,18 +58,19 @@
               </div>
             </div>
           </div>
-          <div class="category bg-secondary w-100" id="category-container"></div>
+          <div class="category bg-secondary w-100 p-3" id="category-container"></div>
         </div>
         <div class="col-md-6 d-flex flex-column align-items-center" id="cesta">
           <h1 class="w-100 rounded p-3 text-center text-dark bg-white">Cesta de la compra</h1>
           <div class="bg-info w-100 d-flex flex-column justify-content-end align-items-end px-3 pb-3">
-            <span class="text-white fs-3 fw-bold">Precio total: 0 €</span>
+            <div id="shopping-cart-container" class="p-3"></div>
           </div>
         </div>
       </div>
     </div>
   </body>
   <script src="js/data.js"></script>
-  <script src="js/addCategory.js"></script>
-  <script src="js/addProduct.js"></script>
-  </html>
+  <script src="js/categories.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/shopCart.js"></script>
+</html>
