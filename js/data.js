@@ -72,10 +72,6 @@ if (!localStorage.getItem('products')) {
   localStorage.setItem('products', JSON.stringify(products))
 }
 
-if(!localStorage.getItem('categoriesState')) {
-  localStorage.setItem('categoriesState', '1')
-}
-
 // Show categories and products in the view
 function showProducts() {
   const categoriesJSON = JSON.parse(localStorage.getItem('categories')) || []
