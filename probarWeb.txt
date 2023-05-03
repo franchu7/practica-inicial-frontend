@@ -1,0 +1,1 @@
+Para probar la parte del cliente del sistema de compra online basta con abir el fichero de index.html en cualquier navegador web.

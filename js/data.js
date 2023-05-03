@@ -2,6 +2,7 @@
 let categories = [
   { id: 1, name: 'Juegos de terror' },
   { id: 2, name: 'Juegos de plataformas' },
+  {id: 3, name: 'Juegos de acción'}
 ]
 
 // Default products
@@ -30,7 +31,17 @@ let products = [
   },
   {
     id: 3,
-    code: '2',
+    code: '3',
+    title: 'Silent Hill 3',
+    description: 'Silent Hill 3 es un videojuego de survival horror, desarrollado por Team Silent y publicado por Konami en 2003 para la consola PlayStation 2. Es la tercera entrega de la serie Silent Hill y se desarrolla diecisiete años después de los acontecimientos de Silent Hill.',
+    price: '29.99',
+    stock: 15,
+    image: 'images/silent_hill_3.jpg',
+    category: 1,
+  },
+  {
+    id: 4,
+    code: '4',
     title: 'Super Mario Odyssey',
     description:
       'Acompaña a Mario en una aventura en 3D enorme por todo el planeta usando sus nuevas habilidades para recoger lunas que servirán de combustible a tu aeronave, la Odyssey. ¡Y entretanto, rescata a la princesa Peach de las garras de Bowser!',
@@ -39,6 +50,16 @@ let products = [
     image: 'images/mario_odyssey.jpg',
     category: 2,
   },
+  {
+    id: 5,
+    code: '5',
+    title: 'Grand Theft Auto V',
+    description: 'Grand Theft Auto V es un videojuego de acción-aventura de mundo abierto desarrollado por la compañía británica Rockstar North y distribuido por Rockstar Games. Un joven estafador callejero, un ladrón de bancos retirado y un psicópata aterrador se meten en un lío, y tendrán que llevar a cabo una serie de peligrosos golpes para sobrevivir en una ciudad en la que no pueden confiar en nadie, y mucho menos los unos en los otros.',
+    price: '19.99',
+    stock: 30,
+    image: 'images/gta_v.jpg',
+    category: 3,
+  }
 ]
 
 // Save default categories and products in local storage
@@ -49,6 +70,10 @@ if (!localStorage.getItem('categories')) {
 // Save default categories and products in local storage
 if (!localStorage.getItem('products')) {
   localStorage.setItem('products', JSON.stringify(products))
+}
+
+if(!localStorage.getItem('categoriesState')) {
+  localStorage.setItem('categoriesState', '1')
 }
 
 // Show categories and products in the view
